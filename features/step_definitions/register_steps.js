@@ -32,6 +32,17 @@ When('I enter valid registration details', async function () {
   await registerPage.agreeToTerms();
 });
 
+When('I enter a registered email address', async function () {
+  await registerPage.enterFirstName(faker.person.firstName());
+  await registerPage.enterLastName(faker.person.lastName());
+  await registerPage.enterEmail('798j79@ydkwval9.mailosaur.net'); // Static email
+  await registerPage.enterPhone(phoneNumber);
+  await registerPage.enterPassword(passWord);
+  await registerPage.enterConfirmPassword(passWord);
+  await registerPage.enterCompanyName(faker.company.name());
+  await registerPage.agreeToTerms();
+});
+
 When('I submit the registration form', async function () {
   await registerPage.submitRegistration();
 });
@@ -55,6 +66,13 @@ Then('I should see a success toast message', async function () {
   expect(description).to.include("User successfully registered. Please login to continue.");
 });
 
+Then('I should see an error toast message', async function () {
+  await driver.sleep(3000);
+  const errorMessage = await registerPage.getUserExistsToastMessage();
+  expect(errorMessage).to.include("User already exists");
+});
+
+//exits the browser after each tests
 After(async function () {
   if (this.driver) {
     await this.driver.quit();

@@ -75,6 +75,12 @@ class RegisterPage {
     const description = await toastElement.findElement(By.css('div[data-description]')).getText();
     return { title, description };
   }
+
+  async getUserExistsToastMessage() {
+    const element = await this.driver.wait(until.elementLocated(By.css('li[data-type="error"][data-visible="true"]')), 10000);
+    return await element.getText();
+  }
+  
 }
 
 module.exports = RegisterPage;
