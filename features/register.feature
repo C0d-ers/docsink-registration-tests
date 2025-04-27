@@ -1,4 +1,3 @@
-Feature file
 Feature: User Registration
 
   Scenario: Successful user registration
