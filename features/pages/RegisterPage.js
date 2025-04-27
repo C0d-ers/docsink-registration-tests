@@ -12,8 +12,9 @@ class RegisterPage {
     this.confirmPasswordInput = By.css("[name='confirmPassword']");
     this.companyNameInput = By.css("[name='company_name']");
     this.agreeCheckbox = By.css("#checkbox-tos");
-    this.registerButton = By.css("[type='submit']");
     this.otpInput = By.css("#otp-input");
+    //both register and confirm Button have the same locator, but this needs improvement by providing a better lcoator like [name='register'] or [name='confirm']
+    this.registerButton = By.css("[type='submit']");
     this.confirmButton = By.css("[type='submit']");
   }
 
@@ -66,6 +67,7 @@ class RegisterPage {
   }
 
   async getConfirmationMessage() {
+    //could be improved by providing a better locator - but that requires changes in frondend-code
     const element = await this.driver.wait(until.elementLocated(By.css('.font-semibold.tracking-tight.text-2xl')));
     return await element.getText();
   }
@@ -80,7 +82,25 @@ class RegisterPage {
     const element = await this.driver.wait(until.elementLocated(By.css('li[data-type="error"][data-visible="true"]')), 10000);
     return await element.getText();
   }
-  
+
+  async getAllErrorMessages() {
+    //itarates through defined indices, could be improved by providing a better locator - but that requires changes in frondend-code
+    const elements = await this.driver.findElements(By.css('.text-sm'));
+    const indicesToVerify = [1, 2, 3, 5, 6, 7, 8, 11];
+    const messages = [];
+
+    for (let i = 0; i < elements.length; i++) {
+      if (indicesToVerify.includes(i)) {
+        messages.push(await elements[i].getText());
+      }
+    }
+    return messages;
+  }
+
+  async getInvalidEmailErrorMessage(index) {
+    const elements = await this.driver.findElements(By.css('.text-sm'));
+    return await elements[index].getText();
+  }
 }
 
 module.exports = RegisterPage;
